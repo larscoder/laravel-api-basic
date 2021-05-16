@@ -53,8 +53,24 @@ class PostControllerTest extends TestCase
 
     public function test_404_show()
     {
-        $response = $this->json('GET', "/api/posts/10000");
+        $response = $this->json('GET', '/api/posts/10000');
 
         $response->assertStatus(404);
+    }
+
+    public function test_update()
+    {
+        $post = factory(Post::class)->create();
+
+        // $this->withoutExceptionHandling();
+        $response = $this->json('PUT', "/api/posts/{$post->id}", [
+            'title' => 'Actualizado'
+        ]);
+
+        $response->assertJsonStructure(['id', 'title', 'created_at', 'updated_at'])
+            ->assertJson(['title' => 'Actualizado'])
+            ->assertStatus(200);
+
+        $this->assertDatabaseHas('posts', ['title' => 'Actualizado']);
     }
 }
