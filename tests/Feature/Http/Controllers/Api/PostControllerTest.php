@@ -28,4 +28,14 @@ class PostControllerTest extends TestCase
 
         $this->assertDatabaseHas('posts', ['title' => 'Es post de prueba']);
     }
+
+    public function test_validate_title()
+    {
+        $response = $this->json('POST', '/api/posts', [
+            'tile' => ''
+        ]);
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors('title');
+    }
 }
