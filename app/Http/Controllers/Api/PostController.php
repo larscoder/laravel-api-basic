@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Ap;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Post;
@@ -26,7 +26,9 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $post = Post::create($request->all());
+
+        return response()->json($post, 201);
     }
 
     /**
